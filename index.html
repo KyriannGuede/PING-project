@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -668,43 +668,31 @@
   <!-- ============ PAGE: DASHBOARD ============ -->
   <div class="page active" id="page-dashboard">
     <div class="page-header">
-      <h1>Hello, Jean-Marc 👋</h1>
-      <p>Here is the hotel's real-time status for Monday, June 3, 2026</p>
+      <h1 id="dashboard-greeting">Hello 👋</h1>
+      <p id="dashboard-date">Loading…</p>
     </div>
 
-    <!-- ALERTES -->
-    <div class="alert alert-danger">
-      <i class="ti ti-alert-triangle"></i>
-      <div class="alert-text">
-        <strong>Critical Stock — Wine Glasses</strong>
-        <span>Only 18 glasses remaining · Minimum threshold: 50</span>
-      </div>
-    </div>
-    <div class="alert alert-warn">
-      <i class="ti ti-clock-exclamation"></i>
-      <div class="alert-text">
-        <strong>Room Conflict Detected — Friday, June 7</strong>
-        <span>Versailles Room requested for 2 simultaneous events</span>
-      </div>
-    </div>
+    <!-- ALERTS (dynamic) -->
+    <div id="dashboard-alerts"></div>
+
 
     <!-- KPI -->
     <div class="kpi-row">
       <div class="kpi-card">
         <div class="kpi-badge ok">OK</div>
-        <div class="kpi-label">Events actifs</div>
+        <div class="kpi-label">Active Events</div>
         <div class="kpi-value">4</div>
-        <div class="kpi-sub">cette semaine</div>
+        <div class="kpi-sub">this week</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-badge warn">Attention</div>
+        <div class="kpi-badge warn">Warning</div>
         <div class="kpi-label">Low Stock Items</div>
-        <div class="kpi-value">6</div>
-        <div class="kpi-sub">including 2 critical</div>
+        <div class="kpi-value" id="kpi-low-stock">6</div>
+        <div class="kpi-sub" id="kpi-low-stock-sub">including 2 critical</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-badge ok">OK</div>
-        <div class="kpi-label">Rooms disponibles</div>
+        <div class="kpi-label">Available Rooms</div>
         <div class="kpi-value">3/5</div>
         <div class="kpi-sub">2 under cleaning</div>
       </div>
@@ -729,8 +717,8 @@
             <div class="event-month">June</div>
           </div>
           <div class="event-info">
-            <div class="event-name">Bar Mitzvah — Famille Cohen</div>
-            <div class="event-meta"><i class="ti ti-users" style="font-size:12px"></i> 80 pers · Salle Versailles</div>
+            <div class="event-name">Bar Mitzvah — Cohen Family</div>
+            <div class="event-meta"><i class="ti ti-users" style="font-size:12px"></i> 80 guests · Versailles Room</div>
           </div>
           <span class="event-tag tag-barmitzvah">Bar Mitzvah</span>
         </div>
@@ -740,8 +728,8 @@
             <div class="event-month">June</div>
           </div>
           <div class="event-info">
-            <div class="event-name">Seminar TechCorp</div>
-            <div class="event-meta"><i class="ti ti-users" style="font-size:12px"></i> 45 pers · Salle Louvre + Tuileries</div>
+            <div class="event-name">TechCorp Seminar</div>
+            <div class="event-meta"><i class="ti ti-users" style="font-size:12px"></i> 45 guests · Louvre + Tuileries</div>
           </div>
           <span class="event-tag tag-seminar">Seminar</span>
         </div>
@@ -751,8 +739,8 @@
             <div class="event-month">June</div>
           </div>
           <div class="event-info">
-            <div class="event-name">Tournoi d'échecs FIDE</div>
-            <div class="event-meta"><i class="ti ti-users" style="font-size:12px"></i> 120 pers · Grande salle</div>
+            <div class="event-name">FIDE Chess Tournament</div>
+            <div class="event-meta"><i class="ti ti-users" style="font-size:12px"></i> 120 guests · Grand Hall</div>
           </div>
           <span class="event-tag tag-chess">Competition</span>
         </div>
@@ -763,7 +751,7 @@
           </div>
           <div class="event-info">
             <div class="event-name">Wedding Dupont–Martin</div>
-            <div class="event-meta"><i class="ti ti-users" style="font-size:12px"></i> 180 pers · Salle Versailles + Ext.</div>
+            <div class="event-meta"><i class="ti ti-users" style="font-size:12px"></i> 180 guests · Versailles + Outdoor</div>
           </div>
           <span class="event-tag tag-wedding">Wedding</span>
         </div>
@@ -772,49 +760,19 @@
       <!-- STOCK RAPIDE -->
       <div class="card" id="stock-preview-card">
         <div class="card-header">
-          <span class="card-title">Aperçu stocks</span>
-          <a class="card-link" onclick="navigate('stocks', null)">Tout voir →</a>
+          <span class="card-title">Stock Overview</span>
+          <a class="card-link" onclick="navigate('stocks', null)">View all →</a>
         </div>
         <table class="stock-table">
           <thead>
             <tr>
-              <th>Article</th>
-              <th>Qté</th>
+              <th>Item</th>
+              <th>Qty</th>
               <th>Level</th>
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Fourchettes</td>
-              <td id="dash-forks"><strong>240</strong></td>
-              <td><div class="stock-bar-wrap"><div class="stock-bar high" style="width:80%"></div></div></td>
-              <td><span class="status-dot dot-ok"></span>OK</td>
-            </tr>
-            <tr>
-              <td>Verres à vin</td>
-              <td><strong>18</strong></td>
-              <td><div class="stock-bar-wrap"><div class="stock-bar low" style="width:12%"></div></div></td>
-              <td><span class="status-dot dot-err"></span>Critical</td>
-            </tr>
-            <tr>
-              <td>Projecteurs</td>
-              <td><strong>8</strong></td>
-              <td><div class="stock-bar-wrap"><div class="stock-bar mid" style="width:53%"></div></div></td>
-              <td><span class="status-dot dot-warn"></span>Moyen</td>
-            </tr>
-            <tr>
-              <td>Chaises pliantes</td>
-              <td><strong>320</strong></td>
-              <td><div class="stock-bar-wrap"><div class="stock-bar high" style="width:90%"></div></div></td>
-              <td><span class="status-dot dot-ok"></span>OK</td>
-            </tr>
-            <tr>
-              <td>Nappes blanches</td>
-              <td><strong>62</strong></td>
-              <td><div class="stock-bar-wrap"><div class="stock-bar mid" style="width:41%"></div></div></td>
-              <td><span class="status-dot dot-warn"></span>Low</td>
-            </tr>
+          <tbody id="dashboard-stock-body">
           </tbody>
         </table>
       </div>
@@ -825,7 +783,7 @@
   <div class="page" id="page-stocks">
     <div class="page-header">
       <h1>Inventory Management</h1>
-      <p>Full Inventory · dernière mise à jour il y a 3 min</p>
+      <p>Full Inventory · last updated just now</p>
     </div>
 
     <div class="filter-bar">
@@ -854,9 +812,9 @@
       <table class="full-table" id="stock-full-table">
         <thead>
           <tr>
-            <th style="padding-left:20px">Article</th>
+            <th style="padding-left:20px">Item</th>
             <th>Category</th>
-            <th>N° de série</th>
+            <th>Serial No.</th>
             <th>Available Qty</th>
             <th>Level</th>
             <th>Status</th>
@@ -872,7 +830,7 @@
   <!-- ============ PAGE: UPDATE STOCK ============ -->
   <div class="page" id="page-update">
     <div class="page-header">
-      <h1>Update un article</h1>
+      <h1>Update an Item</h1>
       <p>Stock modification · addition, removal or correction</p>
     </div>
 
@@ -881,13 +839,13 @@
         <label class="form-label">Selected Item</label>
         <select class="form-select" id="article-select" onchange="onArticleSelect(this.value)">
           <option value="">— Select an item —</option>
-          <option value="fourchettes">Fourchettes</option>
-          <option value="verres-vin">Verres à vin</option>
-          <option value="projecteurs">Projecteurs</option>
-          <option value="chaises">Chaises pliantes</option>
-          <option value="nappes">Nappes blanches</option>
-          <option value="assiettes">Assiettes plates</option>
-          <option value="sono">Système sono</option>
+          <option value="fourchettes">Forks</option>
+          <option value="verres-vin">Wine Glasses</option>
+          <option value="projecteurs">Projectors</option>
+          <option value="chaises">Folding Chairs</option>
+          <option value="nappes">White Tablecloths</option>
+          <option value="assiettes">Dinner Plates</option>
+          <option value="sono">Sound System</option>
         </select>
       </div>
 
@@ -900,7 +858,7 @@
             <div class="stock-item-cat" id="item-cat">Tableware · Pas de N° de série</div>
           </div>
           <div class="stock-current-qty">
-            <div class="stock-qty-label">Qté actuelle</div>
+            <div class="stock-qty-label">Current qty</div>
             <div class="stock-qty-num" id="item-qty-display">240</div>
           </div>
         </div>
@@ -932,13 +890,13 @@
           </div>
           <div class="preview-result" id="preview-result">
             <i class="ti ti-arrow-right"></i>
-            <span id="preview-text">Nouveau total : <strong>250</strong> fourchettes</span>
+            <span id="preview-text">New total: <strong>250</strong> forks</span>
           </div>
         </div>
 
         <div class="form-section">
           <label class="form-label">Reason / Note</label>
-          <input type="text" class="form-input" placeholder="Ex. : Achat fournisseur, casse événement…" id="motif-input">
+          <input type="text" class="form-input" placeholder="e.g. Supplier purchase, event breakage…" id="motif-input">
         </div>
 
         <div class="form-actions">
@@ -955,14 +913,14 @@
   <div class="page" id="page-rooms">
     <div class="page-header">
       <h1>Rooms Modularity & Status</h1>
-      <p>Gérez la disponibilité des salles et leurs combinaisons possibles.</p>
+      <p>Manage room availability and possible configurations.</p>
     </div>
 
     <div class="alert alert-info">
       <i class="ti ti-info-circle"></i>
       <div class="alert-text">
-        <strong>Vision claire de la capacité</strong>
-        <span>L'hôtel ne doit pas s'engager sur des jauges impossibles. Vérifiez la modularité avant toute validation.</span>
+        <strong>Capacity Awareness</strong>
+        <span>The hotel must not commit to impossible capacities. Always verify modularity before confirming an event.</span>
       </div>
     </div>
 
@@ -970,49 +928,49 @@
       <div class="card room-card">
         <div>
           <div class="room-header">
-            <div class="room-title">Salle Versailles <span class="kpi-badge ok" style="position:static">Disponible</span></div>
+            <div class="room-title">Versailles Room <span class="kpi-badge ok" style="position:static">Available</span></div>
             <div class="room-meta">
-              <span><i class="ti ti-users"></i> Capacité : 150</span>
+              <span><i class="ti ti-users"></i> Capacity: 150</span>
               <span><i class="ti ti-maximize"></i> 250 m²</span>
             </div>
           </div>
           <div class="modulability-box">
-            <i class="ti ti-arrows-maximize"></i> Modulable avec l'espace Extérieur pour atteindre 250 invités.
+            <i class="ti ti-arrows-maximize"></i> Can be combined with Outdoor space to reach 250 guests.
           </div>
         </div>
-        <button class="btn btn-ghost" style="margin-top:16px; width:100%; justify-content:center">Gérer la configuration</button>
+        <button class="btn btn-ghost" style="margin-top:16px; width:100%; justify-content:center">Manage Configuration</button>
       </div>
 
       <div class="card room-card">
         <div>
           <div class="room-header">
-            <div class="room-title">Salle Louvre <span class="kpi-badge warn" style="position:static">En nettoyage</span></div>
+            <div class="room-title">Louvre Room <span class="kpi-badge warn" style="position:static">Cleaning</span></div>
             <div class="room-meta">
-              <span><i class="ti ti-users"></i> Capacité : 40</span>
-              <span><i class="ti ti-clock"></i> Délai : 1h30 restante</span>
+              <span><i class="ti ti-users"></i> Capacity: 40</span>
+              <span><i class="ti ti-clock"></i> Ready in: 1h30</span>
             </div>
           </div>
           <div class="modulability-box">
-            <i class="ti ti-layout-sidebar"></i> Proche de Tuileries. Ouverture du mur amovible possible (+40 pers).
+            <i class="ti ti-layout-sidebar"></i> Adjacent to Tuileries. Movable wall can open (+40 guests).
           </div>
         </div>
-        <button class="btn btn-ghost" style="margin-top:16px; width:100%; justify-content:center">Inspecter qualité</button>
+        <button class="btn btn-ghost" style="margin-top:16px; width:100%; justify-content:center">Inspect Quality</button>
       </div>
 
       <div class="card room-card">
         <div>
           <div class="room-header">
-            <div class="room-title">Salle Tuileries <span class="kpi-badge err" style="position:static">Occupée</span></div>
+            <div class="room-title">Tuileries Room <span class="kpi-badge err" style="position:static">Occupied</span></div>
             <div class="room-meta">
-              <span><i class="ti ti-users"></i> Capacité : 40</span>
-              <span><i class="ti ti-calendar"></i> Libération : 18h00</span>
+              <span><i class="ti ti-users"></i> Capacity: 40</span>
+              <span><i class="ti ti-calendar"></i> Free at: 6:00 PM</span>
             </div>
           </div>
           <div class="modulability-box">
-            <i class="ti ti-layout-sidebar-right"></i> Reliée à Salle Louvre.
+            <i class="ti ti-layout-sidebar-right"></i> Connected to Louvre Room.
           </div>
         </div>
-        <button class="btn btn-ghost" style="margin-top:16px; width:100%; justify-content:center" disabled>Voir l'événement</button>
+        <button class="btn btn-ghost" style="margin-top:16px; width:100%; justify-content:center" disabled>View Event</button>
       </div>
     </div>
   </div>
@@ -1021,58 +979,58 @@
   <div class="page" id="page-bookings">
     <div class="page-header">
       <h1>Bookings & Event Capacities</h1>
-      <p>Vérifiez que les exigences matérielles et les jauges sont respectées.</p>
+      <p>Verify that equipment requirements and capacity limits are met.</p>
     </div>
 
     <div class="card" style="padding: 0; overflow: hidden;">
       <table class="full-table">
         <thead>
           <tr>
-            <th style="padding-left:20px">Événement</th>
+            <th style="padding-left:20px">Event</th>
             <th>Type</th>
-            <th>Date attendue</th>
-            <th>Participants</th>
-            <th>Salles allouées</th>
-            <th>Statut Matériel</th>
+            <th>Expected Date</th>
+            <th>Guests</th>
+            <th>Rooms Allocated</th>
+            <th>Equipment Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding-left:20px; font-weight:500">Bar Mitzvah — Famille Cohen</td>
+            <td style="padding-left:20px; font-weight:500">Bar Mitzvah — Cohen Family</td>
             <td><span class="event-tag tag-barmitzvah">Bar Mitzvah</span></td>
-            <td>05 Juin 2026</td>
+            <td>June 05, 2026</td>
             <td><strong>80</strong></td>
             <td>Versailles</td>
-            <td><span class="status-dot dot-ok"></span>Prêt</td>
-            <td><button class="btn btn-ghost" style="padding:4px 8px; font-size:12px">Détails</button></td>
+            <td><span class="status-dot dot-ok"></span>Ready</td>
+            <td><button class="btn btn-ghost" style="padding:4px 8px; font-size:12px">Details</button></td>
           </tr>
           <tr>
-            <td style="padding-left:20px; font-weight:500">Seminar TechCorp</td>
-            <td><span class="event-tag tag-seminar">Séminaire</span></td>
-            <td>07 Juin 2026</td>
+            <td style="padding-left:20px; font-weight:500">TechCorp Seminar</td>
+            <td><span class="event-tag tag-seminar">Seminar</span></td>
+            <td>June 07, 2026</td>
             <td><strong>45</strong></td>
             <td>Louvre + Tuileries</td>
-            <td><span class="status-dot dot-ok"></span>Prêt</td>
-            <td><button class="btn btn-ghost" style="padding:4px 8px; font-size:12px">Détails</button></td>
+            <td><span class="status-dot dot-ok"></span>Ready</td>
+            <td><button class="btn btn-ghost" style="padding:4px 8px; font-size:12px">Details</button></td>
           </tr>
           <tr style="background-color: var(--danger-bg)">
-            <td style="padding-left:20px; font-weight:500; color: var(--danger)">Tournoi d'échecs FIDE</td>
-            <td><span class="event-tag tag-chess">Compétition</span></td>
-            <td>10 Juin 2026</td>
+            <td style="padding-left:20px; font-weight:500; color: var(--danger)">FIDE Chess Tournament</td>
+            <td><span class="event-tag tag-chess">Competition</span></td>
+            <td>June 10, 2026</td>
             <td><strong>120</strong></td>
-            <td>Grande salle</td>
-            <td><span class="status-dot dot-err"></span>Manque Tables</td>
-            <td><button class="btn btn-gold" style="padding:4px 8px; font-size:12px">Gérer conflit</button></td>
+            <td>Grand Hall</td>
+            <td><span class="status-dot dot-err"></span>Missing Tables</td>
+            <td><button class="btn btn-gold" style="padding:4px 8px; font-size:12px">Resolve Conflict</button></td>
           </tr>
           <tr>
-            <td style="padding-left:20px; font-weight:500">Convention Médicale</td>
+            <td style="padding-left:20px; font-weight:500">Medical Convention</td>
             <td><span class="event-tag tag-corporate">Convention</span></td>
-            <td>18 Juin 2026</td>
+            <td>June 18, 2026</td>
             <td><strong>200</strong></td>
-            <td>Versailles + Extérieur</td>
-            <td><span class="status-dot dot-warn"></span>Alerte Verres</td>
-            <td><button class="btn btn-ghost" style="padding:4px 8px; font-size:12px">Détails</button></td>
+            <td>Versailles + Outdoor</td>
+            <td><span class="status-dot dot-warn"></span>Glass Alert</td>
+            <td><button class="btn btn-ghost" style="padding:4px 8px; font-size:12px">Details</button></td>
           </tr>
         </tbody>
       </table>
@@ -1083,19 +1041,19 @@
   <div class="page" id="page-logs">
     <div class="page-header">
       <h1>Activity Logs</h1>
-      <p>Audit trail transparent pour la gestion des stocks et de l'hôtel (Super-user view).</p>
+      <p>Transparent audit trail for stock and hotel management (Super-user view).</p>
     </div>
 
     <div class="filter-bar">
       <div class="search-input">
         <i class="ti ti-search"></i>
-        <input type="text" placeholder="Rechercher une action...">
+        <input type="text" placeholder="Search an action…">
       </div>
       <select class="filter-select">
-        <option>Tous les événements</option>
-        <option>Retours matériel</option>
-        <option>Mises à jour de stock</option>
-        <option>Alertes système</option>
+        <option>All events</option>
+        <option>Equipment returns</option>
+        <option>Stock updates</option>
+        <option>System alerts</option>
       </select>
     </div>
 
@@ -1103,40 +1061,40 @@
       <table class="full-table">
         <thead>
           <tr>
-            <th style="padding-left:20px">Horodatage</th>
-            <th>Utilisateur</th>
+            <th style="padding-left:20px">Timestamp</th>
+            <th>User</th>
             <th>Action</th>
-            <th>Détails de l'opération</th>
-            <th>Contrôle Qualité</th>
+            <th>Operation Details</th>
+            <th>Quality Check</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="logs-body">
           <tr>
             <td style="padding-left:20px" class="log-date">2026-06-03 14:32:10</td>
-            <td class="log-user">Jean-Marc D.</td>
-            <td><span class="kpi-badge ok" style="position:static">Ajout Stock</span></td>
-            <td>A ajouté <strong>+10 Fourchettes</strong> (Nouveau total: 250)</td>
+            <td class="log-user" id="log-user-1">—</td>
+            <td><span class="kpi-badge ok" style="position:static">Stock Added</span></td>
+            <td>Added <strong>+10 Forks</strong> (New total: 250)</td>
             <td>—</td>
           </tr>
           <tr>
             <td style="padding-left:20px" class="log-date">2026-06-03 10:15:00</td>
-            <td class="log-user">Système</td>
-            <td><span class="kpi-badge warn" style="position:static">Alerte Déclenchée</span></td>
-            <td>Les "Verres à vin" sont passés sous le seuil critique (18).</td>
+            <td class="log-user">System</td>
+            <td><span class="kpi-badge warn" style="position:static">Alert Triggered</span></td>
+            <td>Wine Glasses dropped below critical threshold (18).</td>
             <td>—</td>
           </tr>
           <tr>
             <td style="padding-left:20px" class="log-date">2026-06-02 18:45:22</td>
             <td class="log-user">Client - TechCorp</td>
-            <td><span class="kpi-badge info" style="position:static">Retour Matériel</span></td>
-            <td>Le client a rendu les équipements : <strong>2 Projecteurs</strong> (PRJ-004, PRJ-005)</td>
-            <td><span class="status-dot dot-ok"></span>Vérifié, état intact</td>
+            <td><span class="kpi-badge info" style="position:static">Equipment Return</span></td>
+            <td>Client returned equipment: <strong>2 Projectors</strong> (PRJ-004, PRJ-005)</td>
+            <td><span class="status-dot dot-ok"></span>Verified, intact</td>
           </tr>
           <tr>
             <td style="padding-left:20px" class="log-date">2026-06-02 09:00:15</td>
             <td class="log-user">Marie L.</td>
-            <td><span class="kpi-badge err" style="position:static">Demande Rejetée</span></td>
-            <td>Rejet de demande : "Capacité 300 personnes dans Salle Louvre".</td>
+            <td><span class="kpi-badge err" style="position:static">Request Rejected</span></td>
+            <td>Rejected request: "Capacity 300 guests in Louvre Room".</td>
             <td>—</td>
           </tr>
         </tbody>
@@ -1148,51 +1106,72 @@
   <div class="page" id="page-settings">
     <div class="page-header">
       <h1>Application Settings</h1>
-      <p>Configuration globale de l'interface PING Hotel Management.</p>
+      <p>Global configuration for the PING Hotel Management interface.</p>
     </div>
 
-    <div class="two-col">
+    <div class="two-col" style="margin-bottom:20px">
       <div class="card">
-        <div class="card-header"><span class="card-title">Paramètres Super-User</span></div>
+        <div class="card-header"><span class="card-title">User Profile</span></div>
         <div class="form-section">
-          <label class="form-label">Nom d'affichage</label>
-          <input type="text" class="form-input" value="Jean-Marc D.">
+          <label class="form-label">Display Name</label>
+          <input type="text" class="form-input" id="settings-name" placeholder="Your name…">
         </div>
         <div class="form-section">
-          <label class="form-label">Niveau d'autorisation</label>
-          <select class="form-select" disabled>
-            <option>Super-User (Accès Total)</option>
+          <label class="form-label">Permission Level</label>
+          <select class="form-select" id="settings-role">
+            <option value="Super User">Super User (Full Access)</option>
+            <option value="Manager">Manager</option>
+            <option value="Staff">Staff</option>
           </select>
-          <p style="font-size:11px; color:var(--text-muted); margin-top:6px;">Seuls les membres du staff possèdent un accès de connexion.</p>
+          <p style="font-size:11px; color:var(--text-muted); margin-top:6px;">Only staff members have login access.</p>
         </div>
-        <button class="btn btn-gold">Sauvegarder le profil</button>
+        <button class="btn btn-gold" onclick="saveProfile()"><i class="ti ti-check"></i> Save Profile</button>
       </div>
 
       <div class="card">
-        <div class="card-header"><span class="card-title">Configurations d'Alertes</span></div>
+        <div class="card-header"><span class="card-title">Alert Configuration</span></div>
         <div class="form-section">
-          <label class="form-label">Seuils par défaut</label>
+          <label class="form-label">Default Thresholds</label>
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-            <input type="checkbox" checked> Activer les avertissements de stock faible
+            <input type="checkbox" checked> Enable low stock warnings
           </div>
           <div style="display:flex; align-items:center; gap:10px;">
-            <input type="checkbox" checked> Bloquer les réservations en cas de conflit matériel
+            <input type="checkbox" checked> Block bookings on equipment conflict
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- USERS SECTION -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Registered Users & Hierarchy</span>
+        <button class="btn btn-ghost" style="font-size:12px; padding:5px 12px" onclick="addUserPrompt()"><i class="ti ti-plus"></i> Add User</button>
+      </div>
+      <table class="full-table">
+        <thead>
+          <tr>
+            <th style="padding-left:20px">Name</th>
+            <th>Role</th>
+            <th>Access Level</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="users-table-body"></tbody>
+      </table>
     </div>
   </div>
 
   <!-- ============ PAGE: CALENDAR (placeholder) ============ -->
   <div class="page" id="page-calendar">
     <div class="page-header">
-      <h1>Calendar des événements</h1>
-      <p>Vue mensuelle · June 2026</p>
+      <h1>Event Calendar</h1>
+      <p id="calendar-header-sub">Monthly view · June 2026</p>
     </div>
     <div class="card" style="min-height:300px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px; color:var(--text-muted)">
       <i class="ti ti-calendar-event" style="font-size:48px; opacity:0.3"></i>
       <div style="font-size:15px">Calendar view — to be implemented</div>
-      <div style="font-size:13px">Cette page affichera un calendrier mensuel interactif avec les événements, les salles et les disponibilités</div>
+      <div style="font-size:13px">This page will display an interactive monthly calendar with events, rooms and availability.</div>
     </div>
   </div>
 
@@ -1207,24 +1186,133 @@
 <!-- SCENARIO BAR -->
 <div class="scenario-bar" id="scenario-bar">
   <div class="scenario-label">Scenario</div>
-  <div class="scenario-text" id="scenario-text">📋 Regardez le tableau de bord : combien de fourchettes y a-t-il en stock ?</div>
-  <div class="scenario-step" id="scenario-step">Étape 1 / 5</div>
+  <div class="scenario-text" id="scenario-text">📋 Check the dashboard: how many forks are currently in stock?</div>
+  <div class="scenario-step" id="scenario-step">Step 1 / 5</div>
   <button class="btn-scenario-next" onclick="nextScenarioStep()">Next Step →</button>
 </div>
 
 <script>
   // ============ DATA ============
   const stockData = [
-    { id: 'fourchettes', name: 'Fourchettes', cat: 'Tableware', serial: false, qty: 240, min: 100, returnable: false, icon: '🍴' },
-    { id: 'verres-vin', name: 'Verres à vin', cat: 'Tableware', serial: false, qty: 18, min: 50, returnable: false, icon: '🍷' },
-    { id: 'projecteurs', name: 'Projecteurs', cat: 'AV Equipment', serial: true, serials: ['PRJ-001','PRJ-002','PRJ-003','PRJ-004','PRJ-005','PRJ-006','PRJ-007','PRJ-008'], qty: 8, min: 3, returnable: true, icon: '📽️' },
-    { id: 'chaises', name: 'Chaises pliantes', cat: 'Furniture', serial: false, qty: 320, min: 80, returnable: true, icon: '🪑' },
-    { id: 'nappes', name: 'Nappes blanches', cat: 'Equipment', serial: false, qty: 62, min: 40, returnable: false, icon: '🏳️' },
-    { id: 'assiettes', name: 'Assiettes plates', cat: 'Tableware', serial: false, qty: 285, min: 100, returnable: false, icon: '🍽️' },
-    { id: 'sono', name: 'Système sono', cat: 'AV Equipment', serial: true, serials: ['SONO-01','SONO-02'], qty: 2, min: 1, returnable: true, icon: '🔊' },
-    { id: 'tables-rondes', name: 'Tables rondes', cat: 'Furniture', serial: false, qty: 28, min: 10, returnable: true, icon: '⚪' },
+    { id: 'fourchettes', name: 'Forks', cat: 'Tableware', serial: false, qty: 240, min: 100, returnable: false, icon: '🍴' },
+    { id: 'verres-vin', name: 'Wine Glasses', cat: 'Tableware', serial: false, qty: 18, min: 50, returnable: false, icon: '🍷' },
+    { id: 'projecteurs', name: 'Projectors', cat: 'AV Equipment', serial: true, serials: ['PRJ-001','PRJ-002','PRJ-003','PRJ-004','PRJ-005','PRJ-006','PRJ-007','PRJ-008'], qty: 8, min: 3, returnable: true, icon: '📽️' },
+    { id: 'chaises', name: 'Folding Chairs', cat: 'Furniture', serial: false, qty: 320, min: 80, returnable: true, icon: '🪑' },
+    { id: 'nappes', name: 'White Tablecloths', cat: 'Equipment', serial: false, qty: 62, min: 40, returnable: false, icon: '🏳️' },
+    { id: 'assiettes', name: 'Dinner Plates', cat: 'Tableware', serial: false, qty: 285, min: 100, returnable: false, icon: '🍽️' },
+    { id: 'sono', name: 'Sound System', cat: 'AV Equipment', serial: true, serials: ['SONO-01','SONO-02'], qty: 2, min: 1, returnable: true, icon: '🔊' },
+    { id: 'tables-rondes', name: 'Round Tables', cat: 'Furniture', serial: false, qty: 28, min: 10, returnable: true, icon: '⚪' },
   ];
 
+  // ============ USERS ============
+  let usersData = [
+    { name: 'Jean-Marc D.', role: 'General Manager', level: 'Super User', status: 'Active', initials: 'JM' },
+    { name: 'Marie L.', role: 'Event Coordinator', level: 'Manager', status: 'Active', initials: 'ML' },
+    { name: 'Thomas R.', role: 'Front Desk', level: 'Staff', status: 'Active', initials: 'TR' },
+    { name: 'Sophie B.', role: 'Catering Lead', level: 'Staff', status: 'Inactive', initials: 'SB' },
+  ];
+
+  // ============ CURRENT USER ============
+  let currentUserName = localStorage.getItem('ping_username') || 'Jean-Marc D.';
+  let currentUserRole = localStorage.getItem('ping_userrole') || 'Super User';
+
+  function updateSidebarUser() {
+    const initials = currentUserName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    document.querySelector('.user-avatar').textContent = initials;
+    document.querySelector('.user-name').textContent = currentUserName;
+    document.querySelector('.user-role').textContent = currentUserRole;
+    document.getElementById('dashboard-greeting').textContent = `Hello, ${currentUserName.split(' ')[0]} 👋`;
+    // Update log user name
+    const logU = document.getElementById('log-user-1');
+    if (logU) logU.textContent = currentUserName;
+  }
+
+  // ============ REAL-TIME DATE ============
+  function updateDashboardDate() {
+    const now = new Date();
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const dayName = days[now.getDay()];
+    const day = now.getDate();
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    document.getElementById('dashboard-date').textContent =
+      `Hotel real-time status for ${dayName}, ${month} ${day}, ${year}`;
+  }
+
+  // ============ ALERTS (dynamic) ============
+  function renderAlerts() {
+    const container = document.getElementById('dashboard-alerts');
+    const alerts = [];
+
+    stockData.forEach(item => {
+      const st = getStatus(item);
+      if (st.label === 'Critical') {
+        alerts.push(`<div class="alert alert-danger">
+          <i class="ti ti-alert-triangle"></i>
+          <div class="alert-text">
+            <strong>Critical Stock — ${item.name}</strong>
+            <span>Only ${item.qty} remaining · Minimum threshold: ${item.min}</span>
+          </div>
+        </div>`);
+      } else if (st.label === 'Low') {
+        alerts.push(`<div class="alert alert-warn">
+          <i class="ti ti-clock-exclamation"></i>
+          <div class="alert-text">
+            <strong>Low Stock — ${item.name}</strong>
+            <span>${item.qty} remaining · Recommended minimum: ${item.min * 3}</span>
+          </div>
+        </div>`);
+      }
+    });
+
+    // Static room conflict alert
+    alerts.push(`<div class="alert alert-warn">
+      <i class="ti ti-clock-exclamation"></i>
+      <div class="alert-text">
+        <strong>Room Conflict Detected — Friday, June 7</strong>
+        <span>Versailles Room requested for 2 simultaneous events</span>
+      </div>
+    </div>`);
+
+    container.innerHTML = alerts.join('');
+  }
+
+  // ============ KPI LOW STOCK ============
+  function updateKpiLowStock() {
+    const low = stockData.filter(i => getStatus(i).label === 'Low' || getStatus(i).label === 'Critical');
+    const critical = stockData.filter(i => getStatus(i).label === 'Critical');
+    const kpiEl = document.getElementById('kpi-low-stock');
+    const subEl = document.getElementById('kpi-low-stock-sub');
+    if (kpiEl) kpiEl.textContent = low.length;
+    if (subEl) subEl.textContent = `including ${critical.length} critical`;
+    const badge = kpiEl ? kpiEl.closest('.kpi-card').querySelector('.kpi-badge') : null;
+    if (badge) {
+      if (critical.length > 0) { badge.className = 'kpi-badge err'; badge.textContent = 'Critical'; }
+      else if (low.length > 0) { badge.className = 'kpi-badge warn'; badge.textContent = 'Warning'; }
+      else { badge.className = 'kpi-badge ok'; badge.textContent = 'OK'; }
+    }
+  }
+
+  // ============ DASHBOARD STOCK PREVIEW ============
+  function renderDashboardStockPreview() {
+    const tbody = document.getElementById('dashboard-stock-body');
+    if (!tbody) return;
+    // Show first 5 items
+    const preview = stockData.slice(0, 5);
+    tbody.innerHTML = preview.map(item => {
+      const st = getStatus(item);
+      const barPct = Math.min(100, Math.round((item.qty / (item.min * 3)) * 100));
+      return `<tr>
+        <td>${item.icon} ${item.name}</td>
+        <td><strong>${item.qty}</strong></td>
+        <td><div class="stock-bar-wrap"><div class="stock-bar ${st.cls}" style="width:${barPct}%"></div></div></td>
+        <td><span class="status-dot ${st.dot}"></span>${st.label}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // ============ STOCK TABLE ============
   function getStatus(item) {
     const pct = item.qty / (item.min * 3);
     if (item.qty < item.min) return { label: 'Critical', dot: 'dot-err', cls: 'low' };
@@ -1245,7 +1333,7 @@
       return `<tr onclick="selectStockRow('${item.id}', this)" data-id="${item.id}">
         <td style="padding-left:20px; font-weight:500">${item.icon} ${item.name}</td>
         <td><span class="cat-badge ${catBadgeClass(item.cat)}">${item.cat}</span></td>
-        <td>${item.serial ? '<span class="serial-badge">N° de série</span>' : '<span style="color:var(--text-muted);font-size:12px">—</span>'}</td>
+        <td>${item.serial ? '<span class="serial-badge">Serial No.</span>' : '<span style="color:var(--text-muted);font-size:12px">—</span>'}</td>
         <td><span class="qty-number">${item.qty}</span></td>
         <td><div class="stock-bar-wrap"><div class="stock-bar ${st.cls}" style="width:${barPct}%"></div></div></td>
         <td><span class="status-dot ${st.dot}"></span>${st.label}</td>
@@ -1253,8 +1341,6 @@
       </tr>`;
     }).join('');
   }
-
-  renderStockTable(stockData);
 
   function filterTable(val) {
     const filtered = stockData.filter(i => i.name.toLowerCase().includes(val.toLowerCase()));
@@ -1286,40 +1372,50 @@
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     const pageEl = document.getElementById('page-' + page);
     if (pageEl) pageEl.classList.add('active');
-    
+
     if (navEl) {
       navEl.classList.add('active');
     } else {
       const matching = document.querySelector(`[data-page="${page}"]`);
       if (matching) matching.classList.add('active');
     }
-    
+
     currentPage = page;
-    
-    const titles = { 
-      dashboard: 'Dashboard', 
-      stocks: 'Inventory Management', 
-      update: 'Stock Update', 
+
+    const titles = {
+      dashboard: 'Dashboard',
+      stocks: 'Inventory Management',
+      update: 'Stock Update',
       calendar: 'Calendar',
       rooms: 'Rooms Management',
       bookings: 'Bookings & Capabilities',
       logs: 'System Logs',
       settings: 'App Settings'
     };
-    
-    const crumbs = { 
-      dashboard: 'General Overview · June 2026', 
-      stocks: 'Full Inventory', 
-      update: 'Stock · Modification', 
-      calendar: 'June 2026',
+
+    const now = new Date();
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const monthYear = `${months[now.getMonth()]} ${now.getFullYear()}`;
+
+    const crumbs = {
+      dashboard: `General Overview · ${monthYear}`,
+      stocks: 'Full Inventory',
+      update: 'Stock · Modification',
+      calendar: monthYear,
       rooms: 'Modularity & Cleaning',
       bookings: 'Upcoming Events & Limits',
       logs: 'Super-user Activity Audit',
       settings: 'Configuration'
     };
-    
+
     document.getElementById('topbar-title').textContent = titles[page] || page;
     document.getElementById('topbar-crumb').textContent = crumbs[page] || '';
+
+    if (page === 'settings') {
+      document.getElementById('settings-name').value = currentUserName;
+      document.getElementById('settings-role').value = currentUserRole;
+      renderUsersTable();
+    }
   }
 
   // ============ UPDATE FORM ============
@@ -1327,13 +1423,13 @@
   let currentItem = null;
 
   const articleInfo = {
-    'fourchettes': { name: 'Fourchettes', cat: 'Tableware · Pas de N° de série', icon: '🍴', qty: 240 },
-    'verres-vin': { name: 'Verres à vin', cat: 'Tableware · Pas de N° de série', icon: '🍷', qty: 18 },
-    'projecteurs': { name: 'Projecteurs', cat: 'AV Equipment · N° de série requis', icon: '📽️', qty: 8 },
-    'chaises': { name: 'Chaises pliantes', cat: 'Furniture · Returnable', icon: '🪑', qty: 320 },
-    'nappes': { name: 'Nappes blanches', cat: 'Equipment · Pas de N° de série', icon: '🏳️', qty: 62 },
-    'assiettes': { name: 'Assiettes plates', cat: 'Tableware · Pas de N° de série', icon: '🍽️', qty: 285 },
-    'sono': { name: 'Système sono', cat: 'AV Equipment · N° de série requis', icon: '🔊', qty: 2 },
+    'fourchettes': { name: 'Forks', cat: 'Tableware · No serial number', icon: '🍴', qty: 240 },
+    'verres-vin': { name: 'Wine Glasses', cat: 'Tableware · No serial number', icon: '🍷', qty: 18 },
+    'projecteurs': { name: 'Projectors', cat: 'AV Equipment · Serial number required', icon: '📽️', qty: 8 },
+    'chaises': { name: 'Folding Chairs', cat: 'Furniture · Returnable', icon: '🪑', qty: 320 },
+    'nappes': { name: 'White Tablecloths', cat: 'Equipment · No serial number', icon: '🏳️', qty: 62 },
+    'assiettes': { name: 'Dinner Plates', cat: 'Tableware · No serial number', icon: '🍽️', qty: 285 },
+    'sono': { name: 'Sound System', cat: 'AV Equipment · Serial number required', icon: '🔊', qty: 2 },
   };
 
   function onArticleSelect(val) {
@@ -1341,6 +1437,9 @@
     if (!val) { detail.style.display = 'none'; return; }
     const info = articleInfo[val];
     if (!info) return;
+    // Sync qty from live stockData
+    const live = stockData.find(i => i.id === val);
+    if (live) info.qty = live.qty;
     currentItem = { ...info, id: val };
     document.getElementById('item-icon').textContent = info.icon;
     document.getElementById('item-name').textContent = info.name;
@@ -1373,7 +1472,7 @@
     else if (currentOp === 'remove') newQty = Math.max(0, currentItem.qty - qty);
     else newQty = qty;
     document.getElementById('preview-text').innerHTML =
-      `Nouveau total : <strong>${newQty}</strong> ${currentItem.name.toLowerCase()}`;
+      `New total: <strong>${newQty}</strong> ${currentItem.name.toLowerCase()}`;
   }
 
   function validateUpdate() {
@@ -1384,24 +1483,18 @@
     else if (currentOp === 'remove') newQty = Math.max(0, currentItem.qty - qty);
     else newQty = qty;
 
-    // update data
+    // Update data
     const dataItem = stockData.find(i => i.id === currentItem.id);
     if (dataItem) dataItem.qty = newQty;
     currentItem.qty = newQty;
     articleInfo[currentItem.id].qty = newQty;
 
-    // update dashboard display
-    if (currentItem.id === 'fourchettes') {
-      const dashCell = document.getElementById('dash-forks');
-      if (dashCell) {
-        dashCell.innerHTML = `<strong>${newQty}</strong>`;
-        dashCell.closest('td').classList.add('flash');
-        setTimeout(() => dashCell.closest('td').classList.remove('flash'), 1200);
-      }
-    }
-
     renderStockTable(stockData);
-    showToast(`Stock mis à jour : ${currentItem.name} → ${newQty} unités`);
+    renderDashboardStockPreview();
+    renderAlerts();
+    updateKpiLowStock();
+
+    showToast(`Stock updated: ${currentItem.name} → ${newQty} units`);
     advanceScenarioOnValidate();
     setTimeout(() => navigate('dashboard', null), 1400);
   }
@@ -1413,32 +1506,79 @@
     setTimeout(() => t.classList.remove('show'), 3500);
   }
 
+  // ============ SETTINGS ============
+  function saveProfile() {
+    const name = document.getElementById('settings-name').value.trim();
+    const role = document.getElementById('settings-role').value;
+    if (!name) { showToast('Please enter a display name.'); return; }
+    currentUserName = name;
+    currentUserRole = role;
+    localStorage.setItem('ping_username', name);
+    localStorage.setItem('ping_userrole', role);
+    updateSidebarUser();
+    showToast(`Profile saved: ${name} (${role})`);
+  }
+
+  // ============ USERS TABLE ============
+  function renderUsersTable() {
+    const tbody = document.getElementById('users-table-body');
+    if (!tbody) return;
+    const levelOrder = { 'Super User': 1, 'Manager': 2, 'Staff': 3 };
+    const sorted = [...usersData].sort((a, b) => (levelOrder[a.level] || 9) - (levelOrder[b.level] || 9));
+    tbody.innerHTML = sorted.map((u, i) => {
+      const levelBadge = u.level === 'Super User' ? 'kpi-badge err' : u.level === 'Manager' ? 'kpi-badge warn' : 'kpi-badge info';
+      const statusDot = u.status === 'Active' ? 'dot-ok' : 'dot-warn';
+      return `<tr>
+        <td style="padding-left:20px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:30px;height:30px;border-radius:50%;background:var(--navy-light);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--gold-light);flex-shrink:0">${u.initials}</div>
+            <span style="font-weight:500">${u.name}</span>
+          </div>
+        </td>
+        <td style="color:var(--text-secondary)">${u.role}</td>
+        <td><span class="${levelBadge}" style="position:static">${u.level}</span></td>
+        <td><span class="status-dot ${statusDot}"></span>${u.status}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function addUserPrompt() {
+    const name = prompt('New user name:');
+    if (!name) return;
+    const role = prompt('Role (e.g. Front Desk, Event Coordinator):') || 'Staff';
+    const level = prompt('Access level (Super User / Manager / Staff):') || 'Staff';
+    const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    usersData.push({ name, role, level, status: 'Active', initials });
+    renderUsersTable();
+    showToast(`User added: ${name}`);
+  }
+
   // ============ SCENARIO ============
   const steps = [
     {
       page: null,
-      text: '📋 Regardez le tableau de bord : combien de fourchettes sont actuellement en stock dans l\'aperçu des stocks ?',
-      step: 'Étape 1 / 5',
+      text: '📋 Check the dashboard: how many forks are currently shown in the stock overview?',
+      step: 'Step 1 / 5',
     },
     {
       page: 'stocks',
-      text: '🔍 Accédez à la page Inventory et sélectionnez l\'article "Fourchettes" pour le modifier.',
-      step: 'Étape 2 / 5',
+      text: '🔍 Go to the Inventory page and select "Forks" to update it.',
+      step: 'Step 2 / 5',
     },
     {
       page: 'update',
-      text: '✏️ Vous êtes sur la page de mise à jour. L\'article Fourchettes est sélectionné. Réglez la quantité à +10 puis validez.',
-      step: 'Étape 3 / 5',
+      text: '✏️ You are on the update page. Forks is selected. Set quantity to +10, then confirm.',
+      step: 'Step 3 / 5',
     },
     {
       page: 'dashboard',
-      text: '✅ Bravo ! Mise à jour validée. Retournez sur le tableau de bord pour vérifier que la nouvelle quantité (250) est bien affichée.',
-      step: 'Étape 4 / 5',
+      text: '✅ Well done! Update confirmed. Go back to the dashboard and verify the new quantity (250) is displayed.',
+      step: 'Step 4 / 5',
     },
     {
       page: null,
-      text: '🎉 Scenario terminé. Vous avez consulté le stock, mis à jour les fourchettes (+10) et vérifié la prise en compte dans le tableau de bord.',
-      step: 'Étape 5 / 5',
+      text: '🎉 Scenario complete. You checked the stock, updated Forks (+10), and verified the change on the dashboard.',
+      step: 'Step 5 / 5',
     },
   ];
 
@@ -1471,7 +1611,15 @@
     }
   }
 
-  // Pre-select fourchettes on update page for scenario
+  // ============ INIT ============
+  updateSidebarUser();
+  updateDashboardDate();
+  renderStockTable(stockData);
+  renderDashboardStockPreview();
+  renderAlerts();
+  updateKpiLowStock();
+
+  // Pre-select forks on update page for scenario
   document.getElementById('article-select').value = 'fourchettes';
   onArticleSelect('fourchettes');
 </script>
